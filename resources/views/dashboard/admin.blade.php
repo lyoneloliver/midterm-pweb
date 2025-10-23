@@ -4,51 +4,56 @@
 
 @section('content')
 <div class="dashboard-container">
-    <h1 class="text-2xl font-semibold mb-4">Welcome, {{ Auth::user()->name }}</h1>
-    <p class="mb-6">You are logged in as <strong>Administrator</strong>.</p>
+    <h1>Welcome, {{ Auth::user()->name }}</h1>
+    <p>You are logged in as <strong>Administrator</strong>.</p>
 
     <div class="dashboard-grid">
+        {{-- Students Card --}}
         <div class="card">
-            <h3 class="text-lg font-semibold">Manage Users</h3>
-            <p>View and manage user accounts.</p>
-            <a href="{{ route('admin.users.index') }}" class="btn-primary mt-2 inline-block">Go</a>
+            <h3>Students</h3>
+            <p>Total registered students: <strong>{{ $student_count }}</strong></p>
+            <a href="{{ route('admin.students.index') }}" class="btn-primary">Manage Students</a>
+        </div>
+
+        {{-- Lecturers Card --}}
+        <div class="card">
+            <h3>Lecturers</h3>
+            <p>Total lecturers: <strong>{{ $lecturer_count }}</strong></p>
+            <a href="{{ route('admin.lecturers.index') }}" class="btn-primary">Manage Lecturers</a>
+        </div>
+
+        {{-- Courses Card --}}
+        <div class="card">
+            <h3>Courses</h3>
+            <p>Total courses: <strong>{{ $course_count }}</strong></p>
+            <a href="{{ route('admin.courses.index') }}" class="btn-primary">Manage Courses</a>
+        </div>
+
+        {{-- Departments Card --}}
+        <div class="card">
+            <h3>Departments</h3>
+            <p>Total departments: <strong>{{ $department_count }}</strong></p>
+            <a href="{{ route('admin.departments.index') }}" class="btn-primary">Manage Departments</a>
+        </div>
+
+        {{-- Academic Years --}}
+        <div class="card">
+            <h3>Academic Years</h3>
+            <p>Manage academic years and active semester.</p>
+            <a href="{{ route('admin.academic-years.index') }}" class="btn-primary">Go</a>
+        </div>
+
+        {{-- System Settings --}}
+        <div class="card">
+            <h3>System Settings</h3>
+            <p>Configure general system settings.</p>
+            <a href="{{ route('admin.settings.index') }}" class="btn-primary">Go</a>
         </div>
 
         <div class="card">
-            <h3 class="text-lg font-semibold">Departments</h3>
-            <p>Manage department data and structures.</p>
-            <a href="{{ route('admin.departments.index') }}" class="btn-primary mt-2 inline-block">Go</a>
-        </div>
-
-        <div class="card">
-            <h3 class="text-lg font-semibold">Courses</h3>
-            <p>Manage courses, SKS, and prerequisites.</p>
-            <a href="{{ route('admin.courses.index') }}" class="btn-primary mt-2 inline-block">Go</a>
-        </div>
-
-        <div class="card">
-            <h3 class="text-lg font-semibold">Lecturers</h3>
-            <p>Manage lecturer accounts and assignments.</p>
-            <a href="{{ route('admin.lecturers.index') }}" class="btn-primary mt-2 inline-block">Go</a>
-        </div>
-
-        <div class="card">
-            <h3 class="text-lg font-semibold">Students</h3>
-            <p>Manage student accounts and enrollment data.</p>
-            <a href="{{ route('admin.students.index') }}" class="btn-primary mt-2 inline-block">Go</a>
-        </div>
-
-        <div class="card">
-            <h3 class="text-lg font-semibold">Academic Years</h3>
-            <p>Set active academic year and semesters.</p>
-            <a href="{{ route('admin.academic-years.index') }}" class="btn-primary mt-2 inline-block">Go</a>
-        </div>
-
-        <div class="card">
-            <h3 class="text-lg font-semibold">System Settings</h3>
-            <p>Adjust academic and system settings.</p>
-            <a href="{{ route('admin.settings.index') }}" class="btn-primary mt-2 inline-block">Go</a>
-        </div>
+            <h3>User</h3>
+            <p>Manage system users.</p>
+            <a href="{{ route('admin.users.index') }}" class="btn-primary">Manage Users</a>
     </div>
 </div>
 @endsection

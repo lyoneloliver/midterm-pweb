@@ -17,7 +17,7 @@ class ScheduleController extends Controller
         $student = Auth::user()->student;
 
         // Filter semester aktif (opsional)
-        $semester = $request->get('semester', now()->format('Y') . ' - Ganjil');
+        $semester = $request->get('semester', now()->format('Y') . ' - Odd');
 
         // Ambil semua enrollment milik student saat semester aktif
         $enrollments = Enrollment::with(['classSection.course', 'classSection.lecturer'])

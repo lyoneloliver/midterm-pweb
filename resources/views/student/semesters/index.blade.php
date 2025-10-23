@@ -12,7 +12,7 @@
                 <tr class="bg-gray-100">
                     <th class="px-4 py-2">#</th>
                     <th class="px-4 py-2">Academic Year</th>
-                    <th class="px-4 py-2">Total SKS</th>
+                    <th class="px-4 py-2">Total Credits</th>
                     <th class="px-4 py-2">GPA / IP</th>
                     <th class="px-4 py-2">Approved By</th>
                     <th class="px-4 py-2">Actions</th>

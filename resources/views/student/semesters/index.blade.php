@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="dashboard-container">
-    <h2 class="text-2xl font-semibold mb-4">My Semester Enrollments</h2>
+    <h2 class="text-2xl font-semibold mb-4">Grades and GPA</h2>
 
     <div class="card overflow-x-auto">
         <table class="w-full table-auto">

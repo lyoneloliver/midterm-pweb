@@ -10,9 +10,9 @@ class DepartmentSeeder extends Seeder
     public function run(): void
     {
         Department::insert([
-            ['name' => 'Informatika', 'code' => 'IF'],
-            ['name' => 'Sistem Informasi', 'code' => 'SI'],
-            ['name' => 'Teknik Komputer', 'code' => 'TK'],
+            ['name' => 'Informatics', 'code' => 'IF'],
+            ['name' => 'Information System', 'code' => 'IS'],
+            ['name' => 'Computer Engineer', 'code' => 'IT'],
         ]);
     }
 }

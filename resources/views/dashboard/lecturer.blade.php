@@ -3,36 +3,89 @@
 @section('title', 'Lecturer Dashboard')
 
 @section('content')
-<div class="dashboard-container">
-    <h1>Hello, {{ Auth::user()->name }}</h1>
-    <p>You are logged in as <strong>Lecturer</strong>.</p>
-
-    <div class="dashboard-grid">
-        <div class="card">
-            <h3>Your Classes</h3>
-            <p>Manage your teaching classes and schedules.</p>
-            <a href="{{ route('lecturer.class-sections.index') }}" class="btn-primary">View Classes</a>
-        </div>
-
-        <div class="card">
-            <h3>Attendance</h3>
-            <p>Track and update student attendance records.</p>
-            <a href="{{ route('lecturer.attendance.index') }}" class="btn-primary">Open</a>
-        </div>
-
-        <div class="card">
-            <h3>Grades</h3>
-            <p>Submit and manage student grades.</p>
-            <a href="{{ route('lecturer.grades.index') }}" class="btn-primary">Enter Grades</a>
+    {{-- Welcome Message --}}
+    <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-lg shadow-sm mb-6" role="alert">
+        <div class="flex">
+            <div class="py-1"><i class="bi bi-info-circle-fill me-3 text-2xl"></i></div>
+            <div>
+                <p class="font-bold">Hello, {{ Auth::user()->name }}! 👋</p>
+                <p class="text-sm">You are logged in as <strong>Lecturer</strong>.</p>
+            </div>
         </div>
     </div>
-</div>
+
+    {{-- Card Grid --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        {{-- Card 1: Your Classes --}}
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
+            <div class="p-6">
+                <div class="flex items-center space-x-4 mb-3">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full">
+                        <i class="bi bi-journal-text text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Your Classes</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Manage your teaching classes and schedules.</p>
+                <a href="{{ route('lecturer.class-sections.index') }}" 
+                   class="inline-flex items-center text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 transition-colors">
+                    View Classes
+                    <i class="bi bi-arrow-right-short ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        {{-- Card 2: Attendance --}}
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
+            <div class="p-6">
+                <div class="flex items-center space-x-4 mb-3">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-yellow-100 rounded-full">
+                        <i class="bi bi-clipboard-check text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Attendance</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Track and update student attendance records.</p>
+                <a href="{{ route('lecturer.attendance.index') }}" 
+                   class="inline-flex items-center text-white bg-yellow-600 hover:bg-yellow-700 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-4 py-2 transition-colors">
+                    Open Attendance
+                    <i class="bi bi-arrow-right-short ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        {{-- Card 3: Grades --}}
+        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden transform hover:-translate-y-1 transition-all duration-300">
+            <div class="p-6">
+                <div class="flex items-center space-x-4 mb-3">
+                    <div class="flex-shrink-0 w-12 h-12 flex items-center justify-center bg-green-100 rounded-full">
+                        <i class="bi bi-pencil-square text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-800">Grades</h3>
+                </div>
+                <p class="text-sm text-gray-500 mb-4">Submit and manage student grades.</p>
+                <a href="{{ route('lecturer.grades.index') }}" 
+                   class="inline-flex items-center text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 transition-colors">
+                    Enter Grades
+                    <i class="bi bi-arrow-right-short ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
 @endsection
 
+{{-- 
+  CATATAN: 
+  Anda dapat MENGHAPUS @push('styles') dan @push('scripts') di bawah ini.
+  Alasannya: File CSS dan JS Anda seharusnya sudah dimuat oleh 'dashboard-layout.blade.php'
+  sehingga tidak perlu dimuat lagi di sini.
+--}}
+{{-- 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endpush
 
 @push('scripts')
 <script src="{{ asset('js/dashboard.js') }}"></script>
-@endpush
+@endpush 
+--}}

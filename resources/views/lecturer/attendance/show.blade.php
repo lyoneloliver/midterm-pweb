@@ -53,7 +53,7 @@
 
         <div class="mt-4">
             <button type="submit" class="btn-primary">Save Attendance</button>
-            <a href="{{ route('lecturer.attendance.index') }}" class="btn-primary bg-gray-500 hover:bg-gray-600 ml-2">Back</a>
+            <a href="{{ route('lecturer.attendance.index') }}" class="btn-primary ml-2">Back</a>
         </div>
     </form>
 </div>

@@ -1,107 +1,96 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Courses Management')
+@section('title', 'Manage Students')
+
+@section('content')
+<div class="dashboard-container">
+    <h1 class="text-2xl font-semibold mb-4">Students Management</h1>
+
+    {{-- Tabel daftar students --}}
+    <div class="card overflow-x-auto mb-6">
+        <table class="w-full table-auto">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="px-4 py-2">#</th>
+                    <th class="px-4 py-2">NRP</th>
+                    <th class="px-4 py-2">Name</th>
+                    <th class="px-4 py-2">Email</th>
+                    <th class="px-4 py-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($students as $index => $student)
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ $index + 1 }}</td>
+                        <td class="px-4 py-2">{{ $student->NRP ?? '-' }}</td>
+                        <td class="px-4 py-2">{{ $student->user->name ?? '-' }}</td>
+                        <td class="px-4 py-2">{{ $student->user->email ?? '-' }}</td>
+                        <td class="px-4 py-2">
+                            <form action="{{ route('admin.students.destroy', $student->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this student?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn-primary bg-red-500 hover:bg-red-600">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-4 py-2 text-center text-gray-500">
+                            No students registered yet.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    {{-- Form tambah student --}}
+    <div class="card">
+        <h3 class="text-xl font-semibold mb-2">Add New Student</h3>
+        <form action="{{ route('admin.students.store') }}" method="POST">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="name" class="block mb-1 font-medium">Name</label>
+                    <input type="text" name="name" id="name" class="border p-2 rounded w-full" value="{{ old('name') }}">
+                    @error('name')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="email" class="block mb-1 font-medium">Email</label>
+                    <input type="email" name="email" id="email" class="border p-2 rounded w-full" value="{{ old('email') }}">
+                    @error('email')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="password" class="block mb-1 font-medium">Password</label>
+                    <input type="password" name="password" id="password" class="border p-2 rounded w-full">
+                    @error('password')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="nrp" class="block mb-1 font-medium">NRP</label>
+                    <input type="text" name="nrp" id="nrp" class="border p-2 rounded w-full" value="{{ old('nrp') }}">
+                    @error('nrp')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+            </div>
+            <button type="submit" class="btn-primary mt-4">Add Student</button>
+        </form>
+    </div>
+</div>
+@endsection
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endpush
-
-@section('content')
-<div class="dashboard-container">
-    <h1>Courses Management</h1>
-
-    {{-- Notifikasi --}}
-    @if(session('success'))
-        <div class="card" style="background-color:#d1fae5; color:#065f46; margin-bottom:1rem;">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if($errors->any())
-        <div class="card" style="background-color:#fee2e2; color:#b91c1c; margin-bottom:1rem;">
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    {{-- Form tambah course --}}
-    <div class="card">
-        <h3>Add New Course</h3>
-        <form action="{{ route('admin.courses.store') }}" method="POST" class="space-y-4">
-            @csrf
-            <div>
-                <label>Course Code</label>
-                <input type="text" name="code" value="{{ old('code') }}" placeholder="e.g. CS101" required class="input-field">
-            </div>
-            <div>
-                <label>Course Name</label>
-                <input type="text" name="name" value="{{ old('name') }}" placeholder="e.g. Introduction to CS" required class="input-field">
-            </div>
-            <div>
-                <label>SKS</label>
-                <input type="number" name="sks" value="{{ old('sks') }}" min="1" required class="input-field">
-            </div>
-            <div>
-                <label>Department</label>
-                <select name="department_id" required class="input-field">
-                    <option value="">-- Select Department --</option>
-                    @foreach($departments as $dept)
-                        <option value="{{ $dept->id }}" {{ old('department_id') == $dept->id ? 'selected' : '' }}>
-                            {{ $dept->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            <button type="submit" class="btn-primary">Add Course</button>
-        </form>
-    </div>
-
-    {{-- List courses --}}
-    <div class="dashboard-grid" style="margin-top:2rem;">
-        <div class="card" style="grid-column: span 1 / -1;">
-            <h3>All Courses</h3>
-            <table style="width:100%; border-collapse:collapse;">
-                <thead>
-                    <tr style="background:#2563eb; color:white;">
-                        <th style="padding:0.5rem; border:1px solid #ccc;">Code</th>
-                        <th style="padding:0.5rem; border:1px solid #ccc;">Name</th>
-                        <th style="padding:0.5rem; border:1px solid #ccc;">SKS</th>
-                        <th style="padding:0.5rem; border:1px solid #ccc;">Department</th>
-                        <th style="padding:0.5rem; border:1px solid #ccc;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($courses as $course)
-                        <tr>
-                            <td style="padding:0.5rem; border:1px solid #ccc;">{{ $course->code }}</td>
-                            <td style="padding:0.5rem; border:1px solid #ccc;">{{ $course->name }}</td>
-                            <td style="padding:0.5rem; border:1px solid #ccc;">{{ $course->sks }}</td>
-                            <td style="padding:0.5rem; border:1px solid #ccc;">
-                                {{ $course->department->name ?? '-' }}
-                            </td>
-                            <td style="padding:0.5rem; border:1px solid #ccc;">
-                                {{-- Delete --}}
-                                <form action="{{ route('admin.courses.destroy', $course->id) }}" method="POST" style="display:inline-block;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn-primary" style="background:#ef4444;">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" style="padding:0.5rem; text-align:center;">No courses available.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-@endsection
 
 @push('scripts')
 <script src="{{ asset('js/dashboard.js') }}"></script>

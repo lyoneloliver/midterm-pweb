@@ -33,9 +33,23 @@ class EnrollmentController extends Controller
         $student = Auth::user()->student;
         $academicYear = AcademicYear::where('is_active', true)->first();
 
+        if (!$academicYear) {
+            return back()->with('error', 'No active academic year.');
+        }
+
         $validated = $request->validate([
-            'class_section_id' => 'required|exists:class_sections,id'
+            'class_section_id' => 'required|exists:class_sections,id',
         ]);
+
+        // Cek apakah sudah terdaftar di kelas ini
+        $exists = Enrollment::where('student_id', $student->id)
+            ->where('class_section_id', $validated['class_section_id'])
+            ->where('academic_year_id', $academicYear->id)
+            ->exists();
+
+        if ($exists) {
+            return back()->with('error', 'You are already enrolled in this class.');
+        }
 
         Enrollment::create([
             'student_id' => $student->id,
@@ -43,12 +57,12 @@ class EnrollmentController extends Controller
             'academic_year_id' => $academicYear->id,
         ]);
 
-        return back()->with('success', 'Class added to your enrollment.');
+        return back()->with('success', 'Class successfully enrolled.');
     }
+
 
     public function destroy(Enrollment $enrollment)
     {
-        $this->authorize('delete', $enrollment);
         $enrollment->delete();
         return back()->with('success', 'Enrollment removed.');
     }

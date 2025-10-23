@@ -45,4 +45,9 @@ class ClassSectionController extends Controller
         ClassSection::create($validated);
         return redirect()->route('lecturer.class-sections.index')->with('success', 'Class section created.');
     }
+
+    public function show(ClassSection $classSection)
+    {
+        return view('lecturer.class_sections.show', compact('classSection'));
+    }
 }

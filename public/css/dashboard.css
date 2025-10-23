@@ -1,21 +1,272 @@
+/* =======================================
+   FRS System - Dashboard Styles (ELEGANT v2)
+   ======================================= */
+
+/* --- Font & Variabel Global --- */
+:root {
+    --primary-color: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff; /* Biru sangat muda untuk background item aktif */
+
+    /* Warna dasar "Glassmorphism" (Kaca Buram) */
+    --glass-bg: rgba(255, 255, 255, 0.65); /* Putih semi-transparan */
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    
+    /* Warna Teks */
+    --text-primary: #111827; /* Hitam pekat */
+    --text-secondary: #4b5563; /* Abu-abu tua */
+    --text-muted: #9ca3af; /* Abu-abu muda */
+    
+    /* Warna Blur (untuk background) */
+    --blur-1: #a855f7; /* Ungu */
+    --blur-2: #2dd4bf; /* Teal */
+    --blur-3: #f59e0b; /* Kuning */
+}
+
+/* --- Body Utama & Background Animasi --- */
+body.dashboard-body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #ffffff; /* 1. Background utama PUTIH SOLID */
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow: hidden; /* Mencegah blur keluar dari layar */
+    min-height: 100vh;
+}
+
+/* 2. LAPISAN BLUR WARNA-WARNI (PALING BELAKANG) */
+body.dashboard-body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -2; /* Ditaruh di paling belakang */
+    
+    /* Tiga "blob" warna */
+    background-image: 
+        radial-gradient(circle at 15% 25%, var(--blur-1), transparent 40%),
+        radial-gradient(circle at 50% 50%, var(--blur-2), transparent 40%),
+        radial-gradient(circle at 85% 75%, var(--blur-3), transparent 40%);
+    
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    
+    /* Efek blur yang sangat kuat */
+    filter: blur(140px);
+    
+    /* Dibuat sangat halus */
+    opacity: 0.2;
+    
+    /* Animasi agar 'blob' bergerak */
+    animation: moveBlurs 25s linear infinite alternate;
+}
+
+/* 3. LAPISAN DOT PATTERN (DI ATAS BLUR) */
+body.dashboard-body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Di atas blur, di bawah konten */
+
+    /* Menggambar titik-titik (dot pattern) */
+    background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px; /* Jarak antar titik */
+    
+    /* Animasi gerak ke atas */
+    animation: moveDotsUp 45s linear infinite;
+    pointer-events: none;
+}
+
+/* --- Animasi Gerak --- */
+@keyframes moveDotsUp {
+    from { background-position-y: 0; }
+    to { background-position-y: -100vh; }
+}
+
+@keyframes moveBlurs {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(100px, 50px) scale(1.3); }
+}
+
+
+/* =======================================
+   4. KONTEN (Sidebar, Header, Card)
+   ======================================= */
+
+/* --- Struktur Layout --- */
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+    /* Pastikan layout berada di atas background animasi */
+    position: relative;
+    z-index: 5;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Header / Navbar (Glassmorphism) --- */
+.header {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.header-user-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-user-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.header-user-name strong {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.btn-logout {
+    background-color: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex; /* Untuk ikon */
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.btn-logout:hover {
+    background-color: #dc2626;
+}
+
+/* Tombol Toggler (Mobile) */
+.sidebar-toggler {
+    display: none; /* Sembunyi di desktop */
+    background: none;
+    border: 1px solid #d1d5db;
+    color: #4b5563;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 1.25rem;
+    margin-right: 1rem;
+    cursor: pointer;
+}
+
+/* --- Sidebar (Glassmorphism, selaras dengan latar) --- */
+.sidebar {
+    width: 260px;
+    background-color: var(--glass-bg); /* Menggunakan background kaca */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: var(--text-secondary); /* Teks jadi gelap */
+    padding: 1.5rem;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
+    border-right: 1px solid var(--glass-border); /* Border kaca */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+    transition: transform 0.3s ease-in-out;
+    z-index: 20; /* Di atas header saat mobile */
+}
+
+.sidebar-header {
+    text-align: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.sidebar-title {
+    color: var(--text-primary); /* Judul jadi gelap */
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
 .sidebar-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    color: #fff;
+    color: var(--text-secondary); /* Teks link jadi gelap */
     text-decoration: none;
-    transition: background 0.2s;
+    transition: background-color 0.2s, color 0.2s;
+    font-weight: 500;
 }
 
 .sidebar-link:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.03); /* Hover abu-abu transparan */
+    color: var(--text-primary);
 }
 
 .sidebar-link.active {
-    background: rgba(255, 255, 255, 0.3);
-    font-weight: bold;
+    background: var(--primary-light); /* Background biru muda */
+    color: var(--primary-color); /* Teks biru tua */
+    font-weight: 600;
 }
 
+.sidebar-link i.bi {
+    font-size: 1.1rem;
+    line-height: 1;
+    color: var(--text-muted); /* Ikon abu-abu */
+}
+
+.sidebar-link.active i.bi {
+    color: var(--primary-color); /* Ikon jadi biru saat aktif */
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 1rem;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* --- Konten Utama & Card (Glassmorphism) --- */
 .dashboard-container {
     padding: 2rem;
 }
@@ -24,31 +275,176 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
 }
 
 .card {
-    background: white;
-    border-radius: 10px;
+    background: var(--glass-bg); /* Background kaca */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px; /* Lebih rounded */
     padding: 1.5rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--glass-border); /* Border kaca */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card h3 {
-    margin-bottom: 0.5rem;
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+}
+
+.card h1, .card h2, .card h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+/* Style ikon di dalam judul card */
+.card h3 i.bi {
+    font-size: 1.2rem;
+}
+
+.card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin: 0 0 1.25rem 0;
+    line-height: 1.5;
 }
 
 .btn-primary {
     display: inline-block;
-    margin-top: 1rem;
-    background: #2563eb;
+    background: var(--primary-color);
     color: white;
-    padding: 0.5rem 1.2rem;
-    border-radius: 5px;
+    padding: 0.6rem 1.25rem;
+    border: none;
+    border-radius: 8px;
     text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
 .btn-primary:hover {
-    background: #1e40af;
+    background: var(--primary-hover);
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+    transform: translateY(-1px);
+}
+
+/* --- Helper Class untuk Teks (dipakai di card) --- */
+.text-primary { color: var(--primary-color); }
+.text-success { color: #16a34a; }
+.text-warning { color: #f59e0b; }
+.text-info { color: #0ea5e9; }
+.text-secondary { color: var(--text-secondary); }
+
+/* Utility classes sederhana */
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-4 { margin-bottom: 1rem; }
+.ms-1 { margin-left: 0.25rem; }
+.d-none { display: none; }
+
+/* --- Responsive (Mobile) --- */
+@media (max-width: 767.98px) {
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        z-index: 1040;
+        transform: translateX(-100%); /* Sembunyi di mobile */
+    }
+    
+    .sidebar.active {
+        transform: translateX(0); /* Tampil saat 'active' */
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1030;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .sidebar-backdrop.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .sidebar-toggler {
+        display: block; /* Tampilkan tombol di mobile */
+    }
+
+    .dashboard-container {
+        padding: 1.5rem;
+    }
+    
+    .header-user-name {
+        display: none; /* Sembunyikan nama di mobile */
+    }
+    
+    .btn-logout .logout-text {
+        display: none; /* Sembunyikan teks "Logout" di mobile */
+    }
+}
+
+/* Tampilkan di atas 'sm' (breakpoint mobile) */
+@media (min-width: 576px) {
+    .d-sm-block { display: block; }
+    .d-sm-inline { display: inline; }
+}
+
+/* 2. LAPISAN BLUR WARNA-WARNI (PALING BELAKANG) */
+body.dashboard-body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -2;
+    
+    background-image: 
+        radial-gradient(circle at 15% 25%, var(--blur-1), transparent 40%),
+        radial-gradient(circle at 50% 50%, var(--blur-2), transparent 40%),
+        radial-gradient(circle at 85% 75%, var(--blur-3), transparent 40%);
+    
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    
+    /* DIUBAH: Dibuat sedikit lebih tajam */
+    filter: blur(120px); 
+    
+    /* DIUBAH: Dibuat 2x lebih cerah/terlihat */
+    opacity: 0.4; 
+    
+    animation: moveBlurs 25s linear infinite alternate;
+}
+
+/* 3. LAPISAN DOT PATTERN (DI ATAS BLUR) */
+body.dashboard-body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+
+    /* DIUBAH: Opacity titik dibuat lebih gelap/jelas */
+    background-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.08) 1px, transparent 1px);
+    background-size: 30px 30px;
+    
+    animation: moveDotsUp 45s linear infinite;
+    pointer-events: none;
 }
 
